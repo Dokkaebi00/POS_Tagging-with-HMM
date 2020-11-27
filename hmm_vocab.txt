@@ -27,6 +27,15 @@ $
 ,
 -
 --
+--n--
+--unknow--
+--unknow_adj--
+--unknow_adv--
+--unknow_digit--
+--unknow_noun--
+--unknow_punct--
+--unknow_upper--
+--unknow_verb--
 .
 ...
 0.01
