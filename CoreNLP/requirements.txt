@@ -2,3 +2,4 @@ pytorch
 stanza 
 conllu
 spacy-stanza
+nltk

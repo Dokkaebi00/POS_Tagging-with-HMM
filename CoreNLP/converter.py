@@ -23,46 +23,55 @@ Below is the example of CoNLL-U format
 # import stanza
 # import conllu
 
-class Word: 
+class formatCoNLLU: 
     def __init__(self,
-        id, # Compulsory
-        word, # Compulsory
-        label): # Compulsory 
+        id, 
+        word,
+        label): 
         self.ID = id
-        self.FORM = word  
-        self.XPOS = label  
-        self.LEMMA = '_'
-        self.UPOSTAG = '_'
-        self.FEATS = '_'
-        self.HEAD = '_'
-        self.DEPREL = '_'
-        self.DEPS = '_'
-        self.MISC = '_'
+        self.FORM = word 
+        self.LEMMA = '_' 
+        self.UPOS = '_' # Also XPOS label  
+        self.XPOS = label 
+        self.FEATS = '_' 
+        self.HEAD = '_' 
+        self.DEPREL = '_' 
+        self.DEPS = '_' 
+        self.MISC = '_' 
 
+    # Not sure what I'm doing here 
+    def __repr__(self): 
+        return {'ID':self.ID,
+                'FORM':self.FORM ,
+                'XPOS':self.XPOS}
 
-
-
-
+# def isSentence(token): 
+#     return False 
 
 
 # Convert train_set.pos & test_set.pos -> CoNLLU format 
 f =  open("./train_set.txt","r") 
 data_raw = f.readlines()
 f.close()
-myDict = {} 
+# myDict = {} 
+listSentence = []
 
 for idx,line in enumerate(data_raw): 
     try:
         str,label = line.split()
-        myDict[str] = label
+        a = formatCoNLLU(id=idx,word=str,label=label)
+        listSentence.append(a)
+        # myDict[idx]=a 
+        # myDict[str] = label
     except ValueError:
         continue
         # pass
 
-for idx,val in enumerate(myDict): 
-    if idx == 5: 
-        break 
-    print(val)
+# for idx,val in enumerate(myDict): 
+#     if idx == 5: 
+#         break 
+#     print(idx, val)
+
 
 # Train POS Tagging 
 
