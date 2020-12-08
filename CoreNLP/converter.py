@@ -23,14 +23,26 @@ Below is the example of CoNLL-U format
 # import stanza
 # import conllu
 
-class formatCoNLLU: 
-    self __init__(self,
-        id
-        word,
-        label): 
-        self.word = word  
-        self.label = label # Also XPOS label  
-        self.feat = '_'
+class Word: 
+    def __init__(self,
+        id, # Compulsory
+        word, # Compulsory
+        label): # Compulsory 
+        self.ID = id
+        self.FORM = word  
+        self.XPOS = label  
+        self.LEMMA = '_'
+        self.UPOSTAG = '_'
+        self.FEATS = '_'
+        self.HEAD = '_'
+        self.DEPREL = '_'
+        self.DEPS = '_'
+        self.MISC = '_'
+
+
+
+
+
 
 
 # Convert train_set.pos & test_set.pos -> CoNLLU format 
