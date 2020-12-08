@@ -18,12 +18,13 @@ Below is the example of CoNLL-U format
 5   .       .       PUNCT   .     _                                 2   punct   _   _
 
 '''
+import os
 # import regex
 # from collections import defaultdict
 # import stanza
 # import conllu
 
-class formatCoNLLU: 
+class WordCoNLL: 
     def __init__(self,
         id, 
         word,
@@ -39,39 +40,62 @@ class formatCoNLLU:
         self.DEPS = '_' 
         self.MISC = '_' 
 
-    # Not sure what I'm doing here 
-    def __repr__(self): 
-        return {'ID':self.ID,
-                'FORM':self.FORM ,
-                'XPOS':self.XPOS}
+    def __str__(self): 
+        return ('{}\t'*10).format(self.ID, self.FORM, self.LEMMA,\
+                self.UPOS, self.XPOS, self.FEATS, self.HEAD, self.DEPREL,\
+                self.DEPS, self.MISC)
 
-# def isSentence(token): 
-#     return False 
+
+def Converter(data_raw): 
+    #TODO: re-label ID, for every new sentence, ID = 0
+    listSentence = []
+    id = 0 
+    for idx,line in enumerate(data_raw): 
+        try: 
+            str,label = line.split()
+            id += 1
+            listSentence.append(WordCoNLL(id=id, word=str, label=label))
+        except ValueError:
+            id == 0
+            continue
+
+    return listSentence
 
 
 # Convert train_set.pos & test_set.pos -> CoNLLU format 
-f =  open("./train_set.txt","r") 
+# f =  open("./train_set.txt","r") 
+f =  open(".\CoreNLP\train_set.txt","r") 
 data_raw = f.readlines()
 f.close()
+
+listSentence = Converter(data_raw)
+for idx in range(100): 
+    print(listSentence[idx])
+
+
+
 # myDict = {} 
-listSentence = []
+# listSentence = []
 
-for idx,line in enumerate(data_raw): 
-    try:
-        str,label = line.split()
-        a = formatCoNLLU(id=idx,word=str,label=label)
-        listSentence.append(a)
-        # myDict[idx]=a 
-        # myDict[str] = label
-    except ValueError:
-        continue
-        # pass
+# for idx,line in enumerate(data_raw): 
+#     try:
+#         str,label = line.split()
+#         a = WordCoNLL(id=idx,word=str,label=label)
+#         listSentence.append(a)
+#         # myDict[idx]=a 
+#         # myDict[str] = label
+#     except ValueError:
+#         continue
+#         # pass
 
-# for idx,val in enumerate(myDict): 
-#     if idx == 5: 
-#         break 
-#     print(idx, val)
+# # for idx,val in enumerate(myDict): 
+# #     if idx == 5: 
+# #         break 
+# #     print(idx, val)
 
+
+# for i in range(5): 
+#     print(listSentence[i])
 
 # Train POS Tagging 
 
