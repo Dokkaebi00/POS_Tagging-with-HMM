@@ -50,15 +50,25 @@ class WordCoNLL:
                 self.UPOS, self.XPOS, self.FEATS, self.HEAD, self.DEPREL,\
                 self.DEPS, self.MISC)
 
+# TODO: Create class, with list contains WordCoNLL
+# then return with asdict function 
+# Ref: https://stackoverflow.com/questions/35282222/in-python-how-do-i-cast-a-class-object-to-a-dict/35282286
 class WordList: 
-    def __init__(self):
-        self.list = {}
+    def __init__(self,
+        word, # WordCoNLLU class 
+        list = [] 
+        ):
+        self.word = word 
+        self.list = list 
+
+
+
 
     # def asdict(self): 
 
 
 def Converter(data_raw): 
-    #TODO: re-label ID, for every new sentence, ID = 0
+    # TODO: re-label ID, for every new sentence, ID = 0
     # This is temporary fix, not sure if correct
     listSentence = []
     id = 0 
