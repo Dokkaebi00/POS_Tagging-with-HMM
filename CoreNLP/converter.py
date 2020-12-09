@@ -31,9 +31,9 @@ class WordCoNLL:
         label): 
         self.ID = id
         self.FORM = word 
-        self.LEMMA = '_' 
+        self.LEMMA = '_' # Stemming word (original word) 
         self.UPOS = '_' # Also XPOS label  
-        self.XPOS = label 
+        self.XPOS = label  
         self.FEATS = '_' 
         self.HEAD = '_' 
         self.DEPREL = '_' 
@@ -41,6 +41,7 @@ class WordCoNLL:
         self.MISC = '_' 
 
     def __str__(self): 
+        # Return should be order below
         return ('{}\t'*10).format(self.ID, self.FORM, self.LEMMA,\
                 self.UPOS, self.XPOS, self.FEATS, self.HEAD, self.DEPREL,\
                 self.DEPS, self.MISC)
@@ -48,31 +49,53 @@ class WordCoNLL:
 
 def Converter(data_raw): 
     #TODO: re-label ID, for every new sentence, ID = 0
+    # This is temporary fix, not sure if correct
     listSentence = []
     id = 0 
     for idx,line in enumerate(data_raw): 
         try: 
             str,label = line.split()
-            id += 1
-            listSentence.append(WordCoNLL(id=id, word=str, label=label))
+            # TODO: '.' should be label as PUNCT 
+            if (str == '.' and label == '.'): 
+                id = 0 
+                continue
+            else: 
+                id += 1
+
+            temp = WordCoNLL(id=id, 
+                            word=str, 
+                            label=label)
+            listSentence.append(temp) 
+            # Debug purpose
+            # if idx <= 100:
+            #     print(vars(temp))
         except ValueError:
             id == 0
-            continue
+            pass 
 
     return listSentence
 
 
 # Convert train_set.pos & test_set.pos -> CoNLLU format 
-# f =  open("./train_set.txt","r") 
-f =  open(".\CoreNLP\train_set.txt","r") 
+f =  open("./train_set.txt","r") 
 data_raw = f.readlines()
 f.close()
-
 listSentence = Converter(data_raw)
-for idx in range(100): 
-    print(listSentence[idx])
+
+# Convert WordCoNLL (Python object) to dict  
 
 
+
+
+# Import converted dict to test POS Tagging in Stanza 
+
+
+
+
+
+
+# for idx in range(100): 
+#     print(listSentence[idx])
 
 # myDict = {} 
 # listSentence = []
@@ -100,5 +123,4 @@ for idx in range(100):
 # Train POS Tagging 
 
 # Eval POS on test_set.pos 
-
 
