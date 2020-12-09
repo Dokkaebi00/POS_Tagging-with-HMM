@@ -1,4 +1,4 @@
-pytorch 
+torch 
 stanza 
 conllu
 spacy-stanza

@@ -18,20 +18,20 @@ Below is the example of CoNLL-U format
 5   .       .       PUNCT   .     _                                 2   punct   _   _
 
 '''
-import os
-# import regex
-# from collections import defaultdict
+# import os
 # import stanza
 # import conllu
+import attr
 
 class WordCoNLL: 
     def __init__(self,
         id, 
         word,
-        label): 
-        self.ID = id
+        label,
+        lemma='_'): 
+        self.ID = id 
         self.FORM = word 
-        self.LEMMA = '_' # Stemming word (original word) 
+        self.LEMMA = lemma # TODO: Stemming word (original word) 
         self.UPOS = '_' # Also XPOS label  
         self.XPOS = label  
         self.FEATS = '_' 
@@ -41,10 +41,20 @@ class WordCoNLL:
         self.MISC = '_' 
 
     def __str__(self): 
+        '''
+            Just return as string presentation with format like CoNLL-U 
+            so you must convert object to dict to use in Stanza
+        '''
         # Return should be order below
         return ('{}\t'*10).format(self.ID, self.FORM, self.LEMMA,\
                 self.UPOS, self.XPOS, self.FEATS, self.HEAD, self.DEPREL,\
                 self.DEPS, self.MISC)
+
+class WordList: 
+    def __init__(self):
+        self.list = {}
+
+    # def asdict(self): 
 
 
 def Converter(data_raw): 
@@ -55,18 +65,23 @@ def Converter(data_raw):
     for idx,line in enumerate(data_raw): 
         try: 
             str,label = line.split()
-            # TODO: '.' should be label as PUNCT 
             if (str == '.' and label == '.'): 
+                # How I label '.' with PUNCT is not a very good example 
+                temp = WordCoNLL(id=id, 
+                        word=str, # receive '.' 
+                        lemma=str, # receive '.'  
+                        label='PUNCT')
+                listSentence.append(temp) 
                 id = 0 
                 continue
             else: 
                 id += 1
-
             temp = WordCoNLL(id=id, 
                             word=str, 
                             label=label)
             listSentence.append(temp) 
-            # Debug purpose
+            ############################
+            # # Debug purpose
             # if idx <= 100:
             #     print(vars(temp))
         except ValueError:
@@ -75,27 +90,31 @@ def Converter(data_raw):
 
     return listSentence
 
-
 # Convert train_set.pos & test_set.pos -> CoNLLU format 
 f =  open("./train_set.txt","r") 
 data_raw = f.readlines()
 f.close()
 listSentence = Converter(data_raw)
 
-# Convert WordCoNLL (Python object) to dict  
+for idx in range(100): 
+    print(listSentence[idx])
+
+
+
+# TODO: Convert WordCoNLL (Python object) to dict  
+# from stanza.utils.conll import CoNLL
+
+# dicts = [[{'id': int('1'), 'text': 'Test', 'upos': 'NOUN', 'xpos': 'NN', 'feats': 'Number=Sing', 'misc': 'start_char=0|end_char=4'}, {'id': int('2'), 'text': 'sentence', 'upos': 'NOUN', 'xpos': 'NN', 'feats': 'Number=Sing', 'misc': 'start_char=5|end_char=13'}, {'id': int('3'), 'text': '.', 'upos': 'PUNCT', 'xpos': '.', 'misc': 'start_char=13|end_char=14'}]] # dicts is List[List[Dict]], representing each token / word in each sentence in the document
+# conll = CoNLL.convert_dict(dicts) # conll is List[List[List]], representing each token / word in each sentence in the document
+
+# print(conll)
+
+# TODO: Import converted dict to test POS Tagging in Stanza 
 
 
 
 
-# Import converted dict to test POS Tagging in Stanza 
 
-
-
-
-
-
-# for idx in range(100): 
-#     print(listSentence[idx])
 
 # myDict = {} 
 # listSentence = []
