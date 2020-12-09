@@ -67,6 +67,7 @@ def Converter(data_raw):
             str,label = line.split()
             if (str == '.' and label == '.'): 
                 # How I label '.' with PUNCT is not a very good example 
+                id += 1
                 temp = WordCoNLL(id=id, 
                         word=str, # receive '.' 
                         lemma=str, # receive '.'  
