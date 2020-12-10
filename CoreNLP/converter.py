@@ -122,9 +122,10 @@ f.close()
 
 
 from stanza.utils.conll import CoNLL
-dicts = Converter(data_raw) 
+dicts = [Converter(data_raw)] 
 conll = CoNLL.convert_dict(dicts) # conll is List[List[List]], representing each token / word in each sentence in the document
 
+print(len(conll[0]))
 
 
 # TODO: Convert WordCoNLL (Python object) to dict  
