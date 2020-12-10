@@ -21,7 +21,7 @@ Below is the example of CoNLL-U format
 # import os
 # import stanza
 # import conllu
-import attr
+# import attr
 
 class WordCoNLL: 
     def __init__(self,
