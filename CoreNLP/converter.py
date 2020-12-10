@@ -73,7 +73,6 @@ class WordCoNLL:
 #         self.list = list 
 
 def Converter(data_raw): 
-    # TODO: re-label ID, for every new sentence, ID = 0
     # This is temporary fix, not sure if correct
     listSentence = []
     id = 0 
@@ -111,6 +110,21 @@ def Converter(data_raw):
 
     return listSentence
 
+
+def exportCoNLLU(filepath, data): 
+    ''' 
+        filepath: a
+        data: a
+    '''
+    try: 
+        f = open(filepath,'w+') # write, both read and write  
+        #  Initial stage to get program running purpose
+
+
+        f.close()
+    except FileExistsError: 
+        print('File {} not found!'.format(filepath))
+
 # Convert train_set.pos & test_set.pos -> CoNLLU format 
 f =  open("./train_set.txt","r") 
 data_raw = f.readlines()
@@ -125,7 +139,7 @@ from stanza.utils.conll import CoNLL
 dicts = [Converter(data_raw)] 
 conll = CoNLL.convert_dict(dicts) # conll is List[List[List]], representing each token / word in each sentence in the document
 
-print(len(conll[0]))
+# print(len(conll[0]))
 
 
 # TODO: Convert WordCoNLL (Python object) to dict  
