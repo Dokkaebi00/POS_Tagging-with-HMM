@@ -50,22 +50,27 @@ class WordCoNLL:
                 self.UPOS, self.XPOS, self.FEATS, self.HEAD, self.DEPREL,\
                 self.DEPS, self.MISC)
 
+    def asdict(self): 
+        return {'id': int(self.ID), # ERROR 
+                'form': self.FORM,  
+                'lemma': self.LEMMA, 
+                'upos': self.UPOS,         
+                'xpos': self.XPOS,         
+                'feats': self.FEATS,         
+                'misc': self.MISC,         
+        }
+
+
 # TODO: Create class, with list contains WordCoNLL
 # then return with asdict function 
 # Ref: https://stackoverflow.com/questions/35282222/in-python-how-do-i-cast-a-class-object-to-a-dict/35282286
-class WordList: 
-    def __init__(self,
-        word, # WordCoNLLU class 
-        list = [] 
-        ):
-        self.word = word 
-        self.list = list 
-
-
-
-
-    # def asdict(self): 
-
+# class WordList: 
+#     def __init__(self,
+#         word, # WordCoNLLU class 
+#         list = [] 
+#         ):
+#         self.word = word 
+#         self.list = list 
 
 def Converter(data_raw): 
     # TODO: re-label ID, for every new sentence, ID = 0
@@ -82,7 +87,8 @@ def Converter(data_raw):
                         word=str, # receive '.' 
                         lemma=str, # receive '.'  
                         label='PUNCT')
-                listSentence.append(temp) 
+                listSentence.append(temp.asdict()) 
+                # listSentence.append(temp) 
                 id = 0 
                 continue
             else: 
@@ -90,11 +96,15 @@ def Converter(data_raw):
             temp = WordCoNLL(id=id, 
                             word=str, 
                             label=label)
-            listSentence.append(temp) 
+            # print(temp.asdict())
+            # listSentence.append(temp) 
+            listSentence.append(temp.asdict()) 
+
             ############################
             # # Debug purpose
             # if idx <= 100:
             #     print(vars(temp))
+
         except ValueError:
             id == 0
             pass 
@@ -105,17 +115,38 @@ def Converter(data_raw):
 f =  open("./train_set.txt","r") 
 data_raw = f.readlines()
 f.close()
-listSentence = Converter(data_raw)
+# listSentence = Converter(data_raw)
 
-for idx in range(100): 
-    print(listSentence[idx])
+# for idx in range(100): 
+#     print(listSentence[idx])
+
+
+from stanza.utils.conll import CoNLL
+dicts = Converter(data_raw) 
+conll = CoNLL.convert_dict(dicts) # conll is List[List[List]], representing each token / word in each sentence in the document
 
 
 
 # TODO: Convert WordCoNLL (Python object) to dict  
 # from stanza.utils.conll import CoNLL
 
-# dicts = [[{'id': int('1'), 'text': 'Test', 'upos': 'NOUN', 'xpos': 'NN', 'feats': 'Number=Sing', 'misc': 'start_char=0|end_char=4'}, {'id': int('2'), 'text': 'sentence', 'upos': 'NOUN', 'xpos': 'NN', 'feats': 'Number=Sing', 'misc': 'start_char=5|end_char=13'}, {'id': int('3'), 'text': '.', 'upos': 'PUNCT', 'xpos': '.', 'misc': 'start_char=13|end_char=14'}]] # dicts is List[List[Dict]], representing each token / word in each sentence in the document
+# dicts = [[{'id': int('1'), 
+#           'text': 'Test', 
+#           'upos': 'NOUN', 
+#           'xpos': 'NN', 
+#           'feats': 'Number=Sing', 
+#           'misc': 'start_char=0|end_char=4'}, 
+#           {'id': int('2'), 
+#           'text': 'sentence', 
+#           'upos': 'NOUN', 
+#           'xpos': 'NN', 'feats': 
+#           'Number=Sing', 'misc': 
+#           'start_char=5|end_char=13'}, 
+#           {'id': int('3'), 
+#           'text': '.', 
+#           'upos': 'PUNCT', 
+#           'xpos': '.', 
+#           'misc': 'start_char=13|end_char=14'}]] # dicts is List[List[Dict]], representing each token / word in each sentence in the document
 # conll = CoNLL.convert_dict(dicts) # conll is List[List[List]], representing each token / word in each sentence in the document
 
 # print(conll)
