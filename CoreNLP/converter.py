@@ -60,18 +60,6 @@ class WordCoNLL:
                 'misc': self.MISC,         
         }
 
-
-# TODO: Create class, with list contains WordCoNLL
-# then return with asdict function 
-# Ref: https://stackoverflow.com/questions/35282222/in-python-how-do-i-cast-a-class-object-to-a-dict/35282286
-# class WordList: 
-#     def __init__(self,
-#         word, # WordCoNLLU class 
-#         list = [] 
-#         ):
-#         self.word = word 
-#         self.list = list 
-
 def Converter(data_raw): 
     # This is temporary fix, not sure if correct
     listSentence = []
@@ -95,8 +83,6 @@ def Converter(data_raw):
             temp = WordCoNLL(id=id, 
                             word=str, 
                             label=label)
-            # print(temp.asdict())
-            # listSentence.append(temp) 
             listSentence.append(temp.asdict()) 
 
             ############################
@@ -111,19 +97,19 @@ def Converter(data_raw):
     return listSentence
 
 
-def exportCoNLLU(filepath, data): 
-    ''' 
-        filepath: a
-        data: a
-    '''
-    try: 
-        f = open(filepath,'w+') # write, both read and write  
-        #  Initial stage to get program running purpose
+# def exportCoNLLU(filepath, data): 
+#     ''' 
+#         filepath: a
+#         data: a
+#     '''
+#     try: 
+#         f = open(filepath,'w+') # write, both read and write  
+#         #  Initial stage to get program running purpose
 
 
-        f.close()
-    except FileExistsError: 
-        print('File {} not found!'.format(filepath))
+#         f.close()
+#     except FileExistsError: 
+#         print('File {} not found!'.format(filepath))
 
 # Convert train_set.pos & test_set.pos -> CoNLLU format 
 f =  open("./train_set.txt","r") 
@@ -141,62 +127,4 @@ conll = CoNLL.convert_dict(dicts) # conll is List[List[List]], representing each
 
 # print(len(conll[0]))
 
-
-# TODO: Convert WordCoNLL (Python object) to dict  
-# from stanza.utils.conll import CoNLL
-
-# dicts = [[{'id': int('1'), 
-#           'text': 'Test', 
-#           'upos': 'NOUN', 
-#           'xpos': 'NN', 
-#           'feats': 'Number=Sing', 
-#           'misc': 'start_char=0|end_char=4'}, 
-#           {'id': int('2'), 
-#           'text': 'sentence', 
-#           'upos': 'NOUN', 
-#           'xpos': 'NN', 'feats': 
-#           'Number=Sing', 'misc': 
-#           'start_char=5|end_char=13'}, 
-#           {'id': int('3'), 
-#           'text': '.', 
-#           'upos': 'PUNCT', 
-#           'xpos': '.', 
-#           'misc': 'start_char=13|end_char=14'}]] # dicts is List[List[Dict]], representing each token / word in each sentence in the document
-# conll = CoNLL.convert_dict(dicts) # conll is List[List[List]], representing each token / word in each sentence in the document
-
-# print(conll)
-
-# TODO: Import converted dict to test POS Tagging in Stanza 
-
-
-
-
-
-
-# myDict = {} 
-# listSentence = []
-
-# for idx,line in enumerate(data_raw): 
-#     try:
-#         str,label = line.split()
-#         a = WordCoNLL(id=idx,word=str,label=label)
-#         listSentence.append(a)
-#         # myDict[idx]=a 
-#         # myDict[str] = label
-#     except ValueError:
-#         continue
-#         # pass
-
-# # for idx,val in enumerate(myDict): 
-# #     if idx == 5: 
-# #         break 
-# #     print(idx, val)
-
-
-# for i in range(5): 
-#     print(listSentence[i])
-
-# Train POS Tagging 
-
-# Eval POS on test_set.pos 
 
